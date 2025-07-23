@@ -1,59 +1,8 @@
-Name: No Clip
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
+Name: Teleport to Nearest Player
+[كود السكربت هنا]
 
-local noclip = true
-RunService.Stepped:Connect(function()
-    if noclip and LocalPlayer.Character then
-        for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-    end
-end)
-Name: Fly
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local UIS = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-
-local flying, speed = true, 5
-local bodyGyro, bodyVelocity
-
-RunService.RenderStepped:Connect(function()
-    if flying and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        if not bodyGyro then
-            bodyGyro = Instance.new("BodyGyro", LocalPlayer.Character.HumanoidRootPart)
-            bodyVelocity = Instance.new("BodyVelocity", LocalPlayer.Character.HumanoidRootPart)
-        end
-        bodyGyro.CFrame = workspace.CurrentCamera.CFrame
-        bodyVelocity.Velocity = workspace.CurrentCamera.CFrame.LookVector * speed * (UIS:IsKeyDown(Enum.KeyCode.W) and 1 or 0)
-    elseif bodyGyro then
-        bodyGyro:Destroy() bodyGyro = nil
-        bodyVelocity:Destroy() bodyVelocity = nil
-    end
-end)
-Name: Infinite Jump
-local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = game:GetService("Players").LocalPlayer
-local jumping = true
-
-UserInputService.JumpRequest:Connect(function()
-    if jumping and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-        LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-    end
-end)
 Name: Speed Hack
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
+[كود السكربت هنا]
 
-local speedEnabled = true
-local speedValue = 100
-RunService.RenderStepped:Connect(function()
-    if speedEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-        LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = speedValue
-    end
-end)
+Name: Another Script
+[كود السكربت هنا]
