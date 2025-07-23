@@ -1,12 +1,13 @@
-Name: Toggle Speed Hack
+Name: Speed Hack
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+local RunService = game:GetService("RunService")
 
-if not _G.SpeedHackEnabled then
-    _G.SpeedHackEnabled = true
-    humanoid.WalkSpeed = 100
-else
-    _G.SpeedHackEnabled = false
-    humanoid.WalkSpeed = 16
-end
+local speedEnabled = true
+local speedValue = 100
+
+RunService.RenderStepped:Connect(function()
+    if speedEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = speedValue
+    end
+end)
