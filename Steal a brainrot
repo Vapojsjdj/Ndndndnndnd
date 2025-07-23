@@ -1,101 +1,12 @@
-Name: Teleport to Nearest Player
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
-
-local function getCharacter(plr)
-    return plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid")
-end
-
-local function getNearestPlayer()
-    local nearest = nil
-    local shortestDist = math.huge
-    local myChar = LocalPlayer.Character
-    if not getCharacter(LocalPlayer) then return end
-    local myPos = myChar.HumanoidRootPart.Position
-
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and getCharacter(player) then
-            local otherChar = player.Character
-            local dist = (otherChar.HumanoidRootPart.Position - myPos).magnitude
-            if dist < shortestDist then
-                shortestDist = dist
-                nearest = player
-            end
-        end
-    end
-
-    return nearest
-end
-
-local teleporting = true
-
-RunService.RenderStepped:Connect(function()
-    if teleporting and getCharacter(LocalPlayer) then
-        local target = getNearestPlayer()
-        if target and getCharacter(target) then
-            local myHRP = LocalPlayer.Character.HumanoidRootPart
-            local targetPos = target.Character.HumanoidRootPart.Position
-            myHRP.CFrame = CFrame.new(targetPos + Vector3.new(0, 2, 0))
-        end
-    end
-end)
-
-
-Name: Example Speed Hack
+Name: Toggle Speed Hack
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-if humanoid then
+
+if not _G.SpeedHackEnabled then
+    _G.SpeedHackEnabled = true
     humanoid.WalkSpeed = 100
-endName: Teleport to Nearest Player
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
-
-local function getCharacter(plr)
-    return plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid")
-end
-
-local function getNearestPlayer()
-    local nearest = nil
-    local shortestDist = math.huge
-    local myChar = LocalPlayer.Character
-    if not getCharacter(LocalPlayer) then return end
-    local myPos = myChar.HumanoidRootPart.Position
-
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and getCharacter(player) then
-            local otherChar = player.Character
-            local dist = (otherChar.HumanoidRootPart.Position - myPos).magnitude
-            if dist < shortestDist then
-                shortestDist = dist
-                nearest = player
-            end
-        end
-    end
-
-    return nearest
-end
-
-local teleporting = true
-
-RunService.RenderStepped:Connect(function()
-    if teleporting and getCharacter(LocalPlayer) then
-        local target = getNearestPlayer()
-        if target and getCharacter(target) then
-            local myHRP = LocalPlayer.Character.HumanoidRootPart
-            local targetPos = target.Character.HumanoidRootPart.Position
-            myHRP.CFrame = CFrame.new(targetPos + Vector3.new(0, 2, 0))
-        end
-    end
-end)
-
-
-Name: Example Speed Hack
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-if humanoid then
-    humanoid.WalkSpeed = 100
+else
+    _G.SpeedHackEnabled = false
+    humanoid.WalkSpeed = 16
 end
