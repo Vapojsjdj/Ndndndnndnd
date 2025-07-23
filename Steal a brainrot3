@@ -1,8 +1,121 @@
 Name: Teleport to Nearest Player
-[كود السكربت هنا]
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+local function getCharacter(plr)
+    return plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid")
+end
+
+local function getNearestPlayer()
+    local nearest = nil
+    local shortestDist = math.huge
+    local myChar = LocalPlayer.Character
+    if not getCharacter(LocalPlayer) then return end
+    local myPos = myChar.HumanoidRootPart.Position
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and getCharacter(player) then
+            local otherChar = player.Character
+            local dist = (otherChar.HumanoidRootPart.Position - myPos).magnitude
+            if dist < shortestDist then
+                shortestDist = dist
+                nearest = player
+            end
+        end
+    end
+
+    return nearest
+end
+
+local teleporting = true
+local connection
+
+if connection then connection:Disconnect() end
+
+connection = RunService.RenderStepped:Connect(function()
+    if teleporting and getCharacter(LocalPlayer) then
+        local target = getNearestPlayer()
+        if target and getCharacter(target) then
+            local myHRP = LocalPlayer.Character.HumanoidRootPart
+            local targetPos = target.Character.HumanoidRootPart.Position
+            myHRP.CFrame = CFrame.new(targetPos + Vector3.new(0, 2, 0))
+        end
+    end
+end)
+
+-- لتعطيل الخاصية يمكنك تعديل teleporting = false
+-- teleporting = false
+
 
 Name: Speed Hack
-[كود السكربت هنا]
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
-Name: Another Script
-[كود السكربت هنا]
+local function setSpeed(speed)
+    local char = LocalPlayer.Character
+    if not char then return end
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.WalkSpeed = speed
+    end
+end
+
+setSpeed(100)
+
+
+Name: Example Fly
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local flying = false
+local humanoid = nil
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local function toggleFly()
+    if flying then
+        flying = false
+        if humanoid then
+            humanoid.PlatformStand = false
+        end
+    else
+        flying = true
+        if not humanoid then
+            local char = LocalPlayer.Character
+            if char then
+                humanoid = char:FindFirstChildOfClass("Humanoid")
+            end
+        end
+        if humanoid then
+            humanoid.PlatformStand = true
+            -- بسيط تحريك
+            RunService:BindToRenderStep("Fly", Enum.RenderPriority.Character.Value, function()
+                if flying then
+                    local cam = workspace.CurrentCamera
+                    local moveDir = Vector3.new()
+                    if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+                        moveDir = moveDir + cam.CFrame.LookVector
+                    end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+                        moveDir = moveDir - cam.CFrame.LookVector
+                    end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+                        moveDir = moveDir - cam.CFrame.RightVector
+                    end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+                        moveDir = moveDir + cam.CFrame.RightVector
+                    end
+                    local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if root then
+                        root.Velocity = moveDir.Unit * 50
+                    end
+                else
+                    RunService:UnbindFromRenderStep("Fly")
+                end
+            end)
+        end
+    end
+end
+
+toggleFly()
