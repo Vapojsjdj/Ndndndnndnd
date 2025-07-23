@@ -1,0 +1,22 @@
+-- هذا هو محتوى السكربتات، احفظه مثلاً في GitHub داخل ملف نصي raw مثل: https://raw.githubusercontent.com/YourUser/Scripts/main/scripts.txt
+
+Name: Speed Hack
+-- سكربت لتسريع الشخصية
+local player = game.Players.LocalPlayer
+player.Character.Humanoid.WalkSpeed = 100
+
+Name: Jump Boost
+-- سكربت لزيادة القفز
+local player = game.Players.LocalPlayer
+player.Character.Humanoid.JumpPower = 150
+
+Name: ESP (Highlight Enemies)
+-- سكربت لتمييز الأعداء
+for _, player in ipairs(game.Players:GetPlayers()) do
+	if player ~= game.Players.LocalPlayer then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.new(1, 0, 0)
+		highlight.OutlineColor = Color3.new(1, 1, 1)
+		highlight.Parent = player.Character
+	end
+end
